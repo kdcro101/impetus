@@ -48,6 +48,7 @@
         var paused = false;
         var decelerating = false;
         var trackingPoints = [];
+        var ignoreMousedown = false;
 
         /**
          * Initialize instance
@@ -118,6 +119,9 @@
             paused = false;
         };
 
+        this.setIgnoreMousedown = function (val) {
+            ignoreMousedown = val;
+        };
         /**
          * Update the current x and y values
          * @public
@@ -198,6 +202,11 @@
          * @param  {Object} ev Normalized event
          */
         function onDown(ev) {
+            if (ignoreMousedown) {
+                console.log("Impetus.ignoreMousedown");
+                return;
+            }
+
             var event = normalizeEvent(ev);
             if (!pointerActive && !paused) {
                 pointerActive = true;
@@ -223,7 +232,7 @@
          * @param  {Object} ev Normalized event
          */
         function onMove(ev) {
-            ev.preventDefault();
+            // ev.preventDefault();
             var event = normalizeEvent(ev);
 
             if (pointerActive && event.id === pointerId) {
